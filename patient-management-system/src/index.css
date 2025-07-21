@@ -1,11 +1,11 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./assets/images/background.jpg');
+  background-image: url('./assets/images/background.jpg') !important;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -35,4 +35,4 @@ code {
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
-}
+} */

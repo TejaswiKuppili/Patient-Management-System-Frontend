@@ -1,15 +1,24 @@
-import { Button, ButtonProps, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, SxProps, Theme } from '@mui/material';
 
-interface CustomButtonProps extends ButtonProps {
+interface CustomButtonProps {
   loading?: boolean;
+  children: React.ReactNode;
+  className?: string;
+  sx?: SxProps<Theme>; // ✅ allow sx prop
+  [key: string]: any;  // allow other props like onClick, disabled, etc.
 }
 
-export const CustomButton = ({ loading, children, className, ...props }: CustomButtonProps) => {
+export const CustomButton = ({
+  loading,
+  children,
+  className,
+  sx,
+  ...props
+}: CustomButtonProps) => {
   return (
     <Button
-      fullWidth
-      variant="contained"
       className={className}
+      sx={sx}
       disabled={props.disabled || loading}
       {...props}
     >

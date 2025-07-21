@@ -23,7 +23,7 @@ export const addUser = async (user: {
     Email: user.email,
     RoleName: user.role,
   };
-  const response = await apiClient.post("/api/users", payload);
+  const response = await apiClient.post("/api/users/create", payload);
   return response.data;
 };
 
@@ -36,5 +36,6 @@ export const updateUserRole = async (
   const response = await apiClient.put(`/api/users/roles/${userId}/role`, {
     role: newRole,
   });
+  console.log(response.data);
   return response.data;
 };

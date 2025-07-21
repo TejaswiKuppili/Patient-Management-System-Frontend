@@ -10,6 +10,7 @@ import { faHospitalSymbol } from '@fortawesome/free-solid-svg-icons';
 import { CustomButton, CustomContainer, CustomTextField } from '../../../../components/common/Custom';
 import { Alert, Box, Typography } from '@mui/material';
 import { PasswordField } from '../../../../components/common/Custom/PasswordField';
+import { toast } from 'react-toastify';
 
 // Validation schema for the registration form
 const RegisterSchema = Yup.object().shape({
@@ -30,13 +31,13 @@ export const Register = () => {
         setServerError('');
         try{
             await registerUser(values);
-            alert('Registration successful');
+            toast.success('Registration successful! Please login to continue.');
             navigate('/login');
         }
         catch(error: any){
             setServerError(error?.response?.data?.message || 'Something went wrong');
             navigate('/login');
-            alert('Registration successful! Please login to continue.');
+            toast.error('Registration failed. Please try again.');
         }
         finally{
             setLoading(false);
@@ -58,7 +59,7 @@ export const Register = () => {
             </Box>
 
             <Formik
-                initialValues = {{ name: '', email: '', password: '', confirmPassword: ''}}
+                initialValues = {{ name: '', email: '', password: '', confirmPassword: '', rolename: 'Admin'}}
                 validationSchema={RegisterSchema}
                 onSubmit={handleSubmit}
             >

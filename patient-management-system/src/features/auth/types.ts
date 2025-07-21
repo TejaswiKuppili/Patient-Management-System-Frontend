@@ -3,6 +3,7 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
+  rolename: string;
 }
 
 // This interface defines the structure of the request body for user login.

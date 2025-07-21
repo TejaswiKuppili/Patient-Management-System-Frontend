@@ -13,10 +13,24 @@ import {
 } from '@mui/material';
 import { CustomButton, CustomContainer, CustomTextField } from '../../../../components/common/Custom';
 import { PasswordField } from '../../../../components/common/Custom/PasswordField';
+import { toast } from 'react-toastify';
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  email: Yup.string()
+    .required('Email is required')
+    // .email('Enter a valid email address')
+    .matches(
+      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      'Email must be in a valid format like user@example.com'
+    ),
+
+  password: Yup.string()
+    .required('Password is required')
+    .min(5, 'Password must be at least 5 characters long')
+    .matches(/[a-z]/, 'Must include at least one lowercase letter')
+    .matches(/[A-Z]/, 'Must include at least one uppercase letter')
+    .matches(/\d/, 'Must include at least one number')
+    // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Must include at least one special character'),
 });
 
 export const Login = () => {
@@ -29,7 +43,7 @@ export const Login = () => {
     setServerError('');
     try {
       await loginUser(values);
-      alert('Login successful');
+      toast.success('Login successful');
       navigate('/dashboard/assign-roles');
     } catch (error: any) {
       setServerError(error?.response?.data?.message || 'Something went wrong');
@@ -58,13 +72,14 @@ export const Login = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, handleChange, handleBlur, values, errors, touched }) => (
-          <Form>
+          <Form autoComplete="off">
             <Box mt={3}>
               <CustomTextField
                 id="email"
                 name="email"
                 label="Email"
                 type="email"
+                autoComplete="off"
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -76,6 +91,8 @@ export const Login = () => {
             id="password"
             name="password"
             label="Password"
+            type="password"
+            autoComplete="new-password"
             value={values.password}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -91,8 +108,9 @@ export const Login = () => {
 
               <CustomButton
                 type="submit"
+                variant="contained"
                 loading={loading}
-                sx={{ mt: 3 }}
+                sx={{ mt: 3, width: '100%' }}
               >
                 Login
               </CustomButton>

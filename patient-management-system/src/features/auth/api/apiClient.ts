@@ -21,7 +21,7 @@ let failedQueue: any[] = [];
 // Interceptor to add the access token to the request headers
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("Access Token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,67 +34,67 @@ apiClient.interceptors.request.use(
 );
 
 // Function to process the queue of failed requests and prevent duplicate refresh calls
-const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
-    if (token) {
-      prom.resolve(token);
-    } else {
-      prom.reject(error);
-    }
-  });
-  failedQueue = [];
-};
+// const processQueue = (error: any, token: string | null = null) => {
+//   failedQueue.forEach((prom) => {
+//     if (token) {
+//       prom.resolve(token);
+//     } else {
+//       prom.reject(error);
+//     }
+//   });
+//   failedQueue = [];
+// };
 
 // Interceptor to handle 401 errors and refresh tokens
 
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+// apiClient.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
 
-    // Pass through errors for login or refresh endpoints (don't retry)
-    const isAuthEndpoint =
-      originalRequest.url.includes("/auth/login") ||
-      originalRequest.url.includes("/auth/refresh");
+//     // Pass through errors for login or refresh endpoints (don't retry)
+//     const isAuthEndpoint =
+//       originalRequest.url.includes("/auth/login") ||
+//       originalRequest.url.includes("/auth/refresh");
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !isAuthEndpoint
-    ) {
-      originalRequest._retry = true;
-      console.log("Token expired, attempting to refresh...");
+//     if (
+//       error.response?.status === 401 &&
+//       !originalRequest._retry &&
+//       !isAuthEndpoint
+//     ) {
+//       originalRequest._retry = true;
+//       console.log("Token expired, attempting to refresh...");
 
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return apiClient(originalRequest);
-        });
-      }
+//       if (isRefreshing) {
+//         return new Promise((resolve, reject) => {
+//           failedQueue.push({ resolve, reject });
+//         }).then((token) => {
+//           originalRequest.headers.Authorization = `Bearer ${token}`;
+//           return apiClient(originalRequest);
+//         });
+//       }
 
-      isRefreshing = true;
+// isRefreshing = true;
 
-      try {
-        const { accessToken: newAccessToken } = await refreshToken();
-        localStorage.setItem("New Access Token", newAccessToken);
-        processQueue(null, newAccessToken);
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiClient(originalRequest);
-      } catch (err) {
-        processQueue(err, null);
-        localStorage.removeItem("accessToken");
-        window.location.href = "/login";
-        return Promise.reject(err);
-      } finally {
-        isRefreshing = false;
-      }
-    }
+// try {
+//   const { accessToken: newAccessToken } = await refreshToken();
+//   localStorage.setItem("New Access Token", newAccessToken);
+//   processQueue(null, newAccessToken);
+//   originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+//   return apiClient(originalRequest);
+// } catch (err) {
+//   processQueue(err, null);
+//   localStorage.removeItem("accessToken");
+//   window.location.href = "/login";
+//   return Promise.reject(err);
+// } finally {
+//   isRefreshing = false;
+// }
+// }
 
-    // The caller handles the error. Displays the error message from backend)
-    return Promise.reject(error);
-  }
-);
+// The caller handles the error. Displays the error message from backend)
+// return Promise.reject(error);
+// }
+// );
 
 export default apiClient;

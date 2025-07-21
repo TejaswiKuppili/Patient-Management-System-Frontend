@@ -1,6 +1,7 @@
 // Patient interface which describes the structure of a patient object.
 export interface Patient {
   id: number;
+  visitDate: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;

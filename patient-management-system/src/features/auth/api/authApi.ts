@@ -5,7 +5,7 @@ import { RegisterRequest, LoginRequest, LoginResponse } from "../types";
 export const register = async (
   data: RegisterRequest
 ): Promise<LoginResponse> => {
-  const response = await apiClient.post<LoginResponse>("/register", data);
+  const response = await apiClient.post("/api/users/create", data);
   return response.data;
 };
 

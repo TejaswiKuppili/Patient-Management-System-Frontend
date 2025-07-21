@@ -20,6 +20,7 @@ const usePatients = (): {
       // Transform the fetched data into the expected format
       const patients = data.map((patient: any, index: number) => ({
         id: patient.id,
+        visitDate: patient.visitDate,
         firstName: patient.firstName,
         lastName: patient.lastName,
         dateOfBirth: patient.dateOfBirth,
@@ -30,14 +31,7 @@ const usePatients = (): {
       }));
 
       setPatients(patients);
-      setError(null); // Clear any previous error
-
-      // await new Promise<void>((resolve) =>
-      //   setTimeout(() => {
-      //     setPatients(mockPatients);
-      //     resolve();
-      //   }, 1000)
-      // );
+      setError(null);
       setLoading(false);
     } catch {
       setError("Failed to load patients");
