@@ -347,7 +347,8 @@ const Patients = () => {
           <TextField label="Reason for Visit" value={newPatient.reasonForVisit} onChange={(e) => setNewPatient(prev => ({ ...prev, reasonForVisit: e.target.value }))} fullWidth />
         </DialogContent>
         <DialogActions>
-          <CustomButton variant="contained" onClick={() => setShowAddPatientForm(false)}>Cancel</CustomButton>
+          <CustomButton variant="outlined" onClick={() => setShowAddPatientForm(false)}
+            sx={{'&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' }}}>Cancel</CustomButton>
           <CustomButton variant="contained" onClick={handleAddPatient}>Add Patient</CustomButton>
         </DialogActions>
       </Dialog>

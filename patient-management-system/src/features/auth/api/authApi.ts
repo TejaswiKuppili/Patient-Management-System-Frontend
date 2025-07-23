@@ -1,11 +1,20 @@
 import apiClient from "./apiClient";
-import { RegisterRequest, LoginRequest, LoginResponse } from "../types";
+import { RegisterRequest, LoginRequest, LoginResponse, User } from "../types";
 
 // API call to register a new user
 export const register = async (
   data: RegisterRequest
 ): Promise<LoginResponse> => {
-  const response = await apiClient.post("/api/users/create", data);
+  const payload = {
+    Name: data.name,
+    Email: data.email,
+    Password: data.password,
+    RoleName: data.roleName,
+  };
+
+  console.log("payload", payload);
+  const response = await apiClient.post("/api/users/create", payload);
+  console.log("register", response);
   return response.data;
 };
 
@@ -22,6 +31,18 @@ export const login = async (
   localStorage.setItem("Role", userDetails.roleName);
 
   return { accessToken, refreshToken, userDetails };
+};
+
+// API call to get user details by ID
+export const getUserById = async (userId: string): Promise<User> => {
+  const response = await apiClient.get(`/api/users/${userId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (!response) throw new Error("Failed to fetch user");
+  return await response.data.data;
 };
 
 // API call to refresh the access token using the refresh token

@@ -5,20 +5,12 @@ import { Appointment } from "../types/appointment";
 export const fetchAppointmentsByDoctor = async (
   doctorId: number
 ): Promise<Appointment[]> => {
-  const response = await apiClient.get<Appointment[]>(
-    `/api/appointment/doctor/${doctorId}`
-  );
-  console.log("API", response.data);
-  return response.data;
+  const response = await apiClient.get(`/api/appointment/doctor/${doctorId}`);
+  return response.data.data;
 };
 
 export const fetchAllPatients = async (): Promise<Patient[]> => {
-  const response = await apiClient.get<{
-    success: boolean;
-    message: string | null;
-    data: Patient[];
-    statusCode: number;
-  }>("/api/patient/getAllPatients");
+  const response = await apiClient.get("/api/patient/getAllPatients");
   return response.data.data;
 };
 
@@ -42,5 +34,5 @@ export const bookAppointment = async (
 export const deleteAppointment = async (
   appointmentId: number
 ): Promise<void> => {
-  await apiClient.delete(`/api/appointments/${appointmentId}`);
+  await apiClient.delete(`/api/appointment/${appointmentId}`);
 };

@@ -10,10 +10,15 @@ import {
   Button,
   MenuItem,
   TextField,
+  Box,
+  Paper,
+  Typography,
 } from '@mui/material';
 import { Appointment } from './types/appointment';
-import { bookAppointment, fetchAllPatients, fetchAppointmentsByDoctor } from './api/appointmentApi';
+import { bookAppointment, deleteAppointment, fetchAllPatients, fetchAppointmentsByDoctor } from './api/appointmentApi';
 import { Patient } from '../Patients/patientTypes';
+import { toast } from 'react-toastify';
+import { CustomButton } from '../common/Custom/CustomButton';
 
 const DoctorCalendar = () => {
   const { doctorId: doctorIdParam, doctorName } = useParams();
@@ -24,26 +29,37 @@ const DoctorCalendar = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<DateSelectArg | null>(null);
   const [selectedPatient, setSelectedPatient] = useState<number>(0);
+  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const loadData = async () => {
+    if (!doctorId) return;
+  
+    try {
+      const [appointments, patientList] = await Promise.all([
+        fetchAppointmentsByDoctor(doctorId),
+        fetchAllPatients(),
+      ]);
+
+      const transformedAppointments: Appointment[] = appointments.map((appt: any) => ({
+        id: appt.id,
+        title: appt.patientName ?? 'Unknown',
+        start: appt.appointmentStartTime,
+        end: appt.appointmentEndTime,
+      }));
+      
+      setEvents(transformedAppointments);      
+  
+      setPatients(patientList);
+  
+      return { appointments, patientList };
+    } catch (err) {
+      console.error('Data fetch failed:', err);
+    }
+  };  
 
   useEffect(() => {
-    if (!doctorId) return;
-
-    const loadData = async () => {
-      try {
-        const [appointments, patientList] = await Promise.all([
-          fetchAppointmentsByDoctor(doctorId),
-          fetchAllPatients(),
-        ]);
-        
-        setEvents(appointments);
-        setPatients(patientList);
-      } catch (err) {
-        console.error('Data fetch failed:', err);
-      }
-    };
-    
-
-    loadData();
+    loadData(); // ✅ works now
   }, [doctorId]);
 
   const handleSelectSlot = (arg: DateSelectArg) => {
@@ -52,7 +68,9 @@ const DoctorCalendar = () => {
   };
 
   const handleEventClick = (arg: EventClickArg) => {
-    alert(`Clicked event: ${arg.event.title}`);
+    const eventId = (arg.event as any)._def.publicId;
+    setSelectedEventId(Number(eventId));
+    setDeleteDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
@@ -76,34 +94,74 @@ const DoctorCalendar = () => {
         selectedSlot.endStr
       );
 
-      setEvents([
-        {
-          title: patientName,
-          start: selectedSlot.startStr,
-          end: selectedSlot.endStr,
-        },
-      ]);
-
+      await loadData();
       handleCloseDialog();
+      toast.success('Appointment booked successfully for ' + patientName);
     } catch (err) {
       console.error(err);
     }
   };
 
+  const handleDeleteAppointment = async () => {
+    try {
+      if (selectedEventId) {
+        await deleteAppointment(selectedEventId);
+        await loadData();
+        toast.success('Appointment deleted');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to delete appointment');
+    } finally {
+      setDeleteDialogOpen(false);
+      setSelectedEventId(null);
+    }
+  };
+  
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">
-        Calendar for Dr. {decodeURIComponent(doctorName || '')}
-      </h2>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'auto',
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: '100%',
+          maxWidth: '1000px',
+          padding: 3,
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          maxHeight: '85vh',
+          overflow: 'hidden',
+        }}
+      >
+        <Typography variant="h5" fontWeight="bold" align="center" gutterBottom>
+          Calendar for Dr. {decodeURIComponent(doctorName || '')}
+        </Typography>
 
-      <Calendar
-        events={events}
-        onSelectSlot={handleSelectSlot}
-        onEventClick={handleEventClick}
-      />
+        <Box
+          sx={{
+            height: '70vh', // you can adjust height here
+            overflowY: 'auto',
+          }}
+        >
+          <Calendar
+            events={events.map(e => ({ ...e, id: e.id }))}
+            onSelectSlot={handleSelectSlot}
+            onEventClick={handleEventClick}
+          />
+        </Box>
+      </Paper>
 
-      <Dialog fullWidth open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle align='center'>Book Appointment</DialogTitle>
+
+      {/* Dialog for booking appointment */}
+      <Dialog fullWidth maxWidth="sm" open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle align="center">Book Appointment</DialogTitle>
         <DialogContent>
           <TextField
             select
@@ -134,15 +192,36 @@ const DoctorCalendar = () => {
           </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="secondary">
+          <CustomButton onClick={handleCloseDialog}>
             Cancel
-          </Button>
+          </CustomButton>
           <Button onClick={handleBookAppointment} variant="contained" color="primary">
             Book Appointment
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+
+      {/* Dialog for deleting appointment */}
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle align="center">Delete Appointment</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this appointment?
+        </DialogContent>
+        <DialogActions>
+          <CustomButton onClick={() => setDeleteDialogOpen(false)}
+            sx = {{ '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' }}}>
+            Cancel
+          </CustomButton>
+          <Button
+            onClick={handleDeleteAppointment}
+            color="error"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 

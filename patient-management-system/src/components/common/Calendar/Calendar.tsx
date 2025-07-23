@@ -44,6 +44,7 @@ const Calendar: React.FC<CalendarProps> = ({
       )}
 
       <FullCalendar
+        events={events}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={initialView}
         headerToolbar={{
@@ -59,7 +60,6 @@ const Calendar: React.FC<CalendarProps> = ({
             onSelectSlot(arg);
           }
         }}
-        events={events}
         eventClick={onEventClick}
         height="auto"
       />

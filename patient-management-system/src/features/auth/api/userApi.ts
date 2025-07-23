@@ -12,18 +12,9 @@ export const fetchUsersWithRoles = async (): Promise<UsersWithRoles> => {
   return response.data.data;
 };
 
-//API call to add a new user
-export const addUser = async (user: {
-  name: string;
-  email: string;
-  role: string;
-}) => {
-  const payload = {
-    Name: user.name,
-    Email: user.email,
-    RoleName: user.role,
-  };
-  const response = await apiClient.post("/api/users/create", payload);
+//API call to delete a new user
+export const deleteUser = async (userId: number) => {
+  const response = await apiClient.delete(`/api/users/delete/${userId}`);
   return response.data;
 };
 
@@ -33,7 +24,7 @@ export const updateUserRole = async (
   newRole: string
 ): Promise<void> => {
   console.log("Updating user role:", { role: newRole });
-  const response = await apiClient.put(`/api/users/roles/${userId}/role`, {
+  const response = await apiClient.put(`/api/users/roles/${userId}`, {
     role: newRole,
   });
   console.log(response.data);

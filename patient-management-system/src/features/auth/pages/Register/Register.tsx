@@ -36,7 +36,6 @@ export const Register = () => {
         }
         catch(error: any){
             setServerError(error?.response?.data?.message || 'Something went wrong');
-            navigate('/login');
             toast.error('Registration failed. Please try again.');
         }
         finally{
@@ -59,7 +58,7 @@ export const Register = () => {
             </Box>
 
             <Formik
-                initialValues = {{ name: '', email: '', password: '', confirmPassword: '', rolename: 'Admin'}}
+                initialValues = {{ name: '', email: '', password: '', confirmPassword: '', roleName: ''}}
                 validationSchema={RegisterSchema}
                 onSubmit={handleSubmit}
             >
@@ -119,7 +118,8 @@ export const Register = () => {
             <CustomButton
               type="submit"
               loading={loading}
-              sx={{ mt: 3 }}
+              variant="contained"
+              sx={{ mt: 3, width: '100%' }}
             >
               Register
             </CustomButton>

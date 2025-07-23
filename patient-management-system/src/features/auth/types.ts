@@ -3,7 +3,7 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  rolename: string;
+  roleName: string;
 }
 
 // This interface defines the structure of the request body for user login.
@@ -16,7 +16,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
-  userDetails: User[];
+  userDetails: User;
 }
 
 // This interface defines the structure of a user object, which includes an ID, name, email, and role.
@@ -24,7 +24,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: string;
+  roleName: string;
 }
 
 // This interface defines the structure of the response containing users and their roles.

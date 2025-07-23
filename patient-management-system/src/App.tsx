@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AssignRoles from './components/AssignRoles/AssignRoles';
 import { AuthProvider } from './features/auth/AuthProvider';
 import { ToastContainer } from 'react-toastify';
+import AccessPending from './features/auth/pages/AccessPending/AccessPending';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/access-pending" element={<AccessPending />} />
           <Route
             path="/"
             element={<ProtectedRoute>

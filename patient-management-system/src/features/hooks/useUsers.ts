@@ -17,7 +17,7 @@ const useUsers = (): UsersWithRoles => {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.roleName,
+        roleName: user.roleName,
       }));
       setUsers(users);
       setRoles(data.roles);
