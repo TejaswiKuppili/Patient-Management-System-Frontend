@@ -1,8 +1,9 @@
 export interface Profile {
+  applicationUserId: number;
   firstName: string;
   lastName: string;
   email: string;
-  contactNumber: string;
+  phoneNumber?: string;
   gender: string;
   dateOfBirth: string;
   bio: string;
