@@ -35,7 +35,7 @@ const Appointments = () => {
       padding={4}
     >
       {doctors.map((doctor) => (
-        <Box key={doctor.id} position="relative" width={280}>
+        <Box key={doctor.id} position="relative" width={300}>
           {/* Horizontal Top Ribbon */}
           <Box
             sx={{

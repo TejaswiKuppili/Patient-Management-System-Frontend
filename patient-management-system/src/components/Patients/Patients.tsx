@@ -247,11 +247,19 @@ const Patients = () => {
                   <TableCell onClick={() => handleSort('firstName')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
                     Name {sortConfig.key === 'firstName' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
                   </TableCell>
-                  <TableCell onClick={() => handleSort('dateOfBirth')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>DOB</TableCell>
-                  <TableCell onClick={() => handleSort('gender')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Gender</TableCell>
+                  <TableCell onClick={() => handleSort('dateOfBirth')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+                    DOB {sortConfig.key === 'dateOfBirth' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                  </TableCell>
+                  <TableCell onClick={() => handleSort('gender')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+                    Gender {sortConfig.key === 'gender' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                  </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Contact</TableCell>
-                  <TableCell onClick={() => handleSort('address')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Address</TableCell>
-                  <TableCell onClick={() => handleSort('reasonForVisit')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Reason</TableCell>
+                  <TableCell onClick={() => handleSort('address')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+                    Address {sortConfig.key === 'address' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                  </TableCell>
+                  <TableCell onClick={() => handleSort('reasonForVisit')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+                    Reason {sortConfig.key === 'reasonForVisit' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                  </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Actions</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Vitals</TableCell>
                 </TableRow>
@@ -366,8 +374,13 @@ const Patients = () => {
           <TextField label="Respiratory Rate" value={vitals.respiratoryRate} onChange={(e) => setVitals(prev => ({ ...prev, respiratoryRate: e.target.value }))} fullWidth />
         </DialogContent>
         <DialogActions>
-          <CustomButton
-          onClick={() => setShowAddVitalsForm(false)}>
+          <CustomButton variant='outlined'
+          onClick={() => setShowAddVitalsForm(false)}
+          sx={{
+                          color: '#007b83',
+                          borderColor: '#007b83',
+                          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+            }}>
             Cancel
           </CustomButton>
           <CustomButton variant="contained" onClick={handleAddVitals}>Submit</CustomButton>

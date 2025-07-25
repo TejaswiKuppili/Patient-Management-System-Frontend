@@ -34,5 +34,5 @@ export const bookAppointment = async (
 export const deleteAppointment = async (
   appointmentId: number
 ): Promise<void> => {
-  await apiClient.delete(`/api/appointment/${appointmentId}`);
+  await apiClient.delete(`/api/appointment/delete/${appointmentId}`);
 };

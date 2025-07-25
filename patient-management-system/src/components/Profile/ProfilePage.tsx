@@ -123,8 +123,8 @@ const ProfilePage: React.FC = () => {
           fullWidth
           label="Date of Birth"
           type="date"
-          name="dateOfBirth"
-          value={profile.dateOfBirth ?? ""}
+          name="date"
+          value={profile.date ?? ""}
           onChange={handleChange}
           InputLabelProps={{ shrink: true }}
         />
@@ -255,7 +255,7 @@ export default ProfilePage;
 //         applicationUserId: 0,
 //         firstName: '',
 //         lastName: '',
-//         dateOfBirth: '',
+//         date: '',
 //         gender: '',
 //         email: '',
 //         phoneNumber: '',
@@ -282,7 +282,7 @@ export default ProfilePage;
 //             applicationUserId: user.id,
 //             firstName: userProfile.firstName || '',
 //             lastName: userProfile.lastName || '',
-//             dateOfBirth: userProfile.dateOfBirth || '',
+//             date: userProfile.date || '',
 //             gender: userProfile.gender || '',
 //             email: userProfile.email || '',
 //             phoneNumber: userProfile.phoneNumber || '',
@@ -405,8 +405,8 @@ export default ProfilePage;
 //             fullWidth
 //             label="Date of Birth"
 //             type="date"
-//             name="dateOfBirth"
-//             value={profile.dateOfBirth ?? ''}
+//             name="date"
+//             value={profile.date ?? ''}
 //             onChange={handleChange}
 //             InputLabelProps={{ shrink: true }}
 //           />

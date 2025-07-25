@@ -104,7 +104,6 @@ const AssignRoles = () => {
   
       await deleteUser(selectedUser.id);
       toast.success('User deleted successfully');
-      // loadUsers();
     } catch (error) {
       toast.error('Failed to delete user');
       console.error(error);
@@ -202,7 +201,7 @@ const AssignRoles = () => {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.roleName}</TableCell>
                       <TableCell>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Box>
                           <IconButton
                             color="primary"
                             onClick={() => {

@@ -5,7 +5,7 @@ export interface Profile {
   email: string;
   phoneNumber?: string;
   gender: string;
-  dateOfBirth: string;
+  date: string;
   bio: string;
   address: string;
   city: string;
