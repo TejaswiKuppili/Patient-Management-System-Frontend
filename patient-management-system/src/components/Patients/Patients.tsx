@@ -232,98 +232,102 @@ const Patients = () => {
 
       {message && <Alert severity="info" sx={{ mb: 2 }}>{message}</Alert>}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+{loading ? (
+  <Box display="flex" justifyContent="center" mt={4}>
+    <CircularProgress />
+  </Box>
+) : (
+  <Box sx={{ mx: 'auto', mt: 3 }}>
+    <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
+      <Table stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell onClick={() => handleSort('visitDate')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              Visit Date
+            </TableCell>
+            <TableCell onClick={() => handleSort('firstName')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              Name {sortConfig.key === 'firstName' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+            </TableCell>
+            <TableCell onClick={() => handleSort('dateOfBirth')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              DOB {sortConfig.key === 'dateOfBirth' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+            </TableCell>
+            <TableCell onClick={() => handleSort('gender')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              Gender {sortConfig.key === 'gender' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+            </TableCell>
+            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Contact</TableCell>
+            <TableCell onClick={() => handleSort('address')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              Address {sortConfig.key === 'address' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+            </TableCell>
+            <TableCell onClick={() => handleSort('reasonForVisit')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
+              Reason {sortConfig.key === 'reasonForVisit' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+            </TableCell>
+            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Actions</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Vitals</TableCell>
+          </TableRow>
+        </TableHead>
 
-      {loading ? (
-        <Box display="flex" justifyContent="center" mt={4}><CircularProgress /></Box>
-      ) : (
-        <Box sx={{ mx: 'auto', mt: 3 }}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell onClick={() => handleSort('visitDate')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    Visit Date
+        <TableBody>
+          {filteredPatients.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={9} align="center">No patients found.</TableCell>
+            </TableRow>
+          ) : (
+            sortedPatients
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(patient => (
+                <TableRow key={patient.id}>
+                  <TableCell>{formatter.format(new Date())}</TableCell>
+                  <TableCell>{patient.firstName} {patient.lastName}</TableCell>
+                  <TableCell>{formatter.format(new Date(patient.dateOfBirth))}</TableCell>
+                  <TableCell>{patient.gender}</TableCell>
+                  <TableCell>{patient.contactNumber}</TableCell>
+                  <TableCell>{patient.address}</TableCell>
+                  <TableCell>{patient.reasonForVisit}</TableCell>
+                  <TableCell>
+                    <CustomButton
+                      variant="outlined"
+                      sx={{
+                        color: '#007b83',
+                        borderColor: '#007b83',
+                        '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+                      }}
+                      onClick={() => handleSelectedPatient(patient)}
+                    >
+                      Add Vitals
+                    </CustomButton>
                   </TableCell>
-                  <TableCell onClick={() => handleSort('firstName')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    Name {sortConfig.key === 'firstName' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+                  <TableCell>
+                    <CustomButton
+                      variant="outlined"
+                      sx={{
+                        color: '#007b83',
+                        borderColor: '#007b83',
+                        '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+                      }}
+                      onClick={() => handleShowVitals(patient.id)}
+                    >
+                      Show Vitals
+                    </CustomButton>
                   </TableCell>
-                  <TableCell onClick={() => handleSort('dateOfBirth')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    DOB {sortConfig.key === 'dateOfBirth' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
-                  </TableCell>
-                  <TableCell onClick={() => handleSort('gender')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    Gender {sortConfig.key === 'gender' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Contact</TableCell>
-                  <TableCell onClick={() => handleSort('address')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    Address {sortConfig.key === 'address' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
-                  </TableCell>
-                  <TableCell onClick={() => handleSort('reasonForVisit')} sx={{ cursor: 'pointer', fontWeight: 'bold', backgroundColor: '#77D5CB' }}>
-                    Reason {sortConfig.key === 'reasonForVisit' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Actions</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#77D5CB' }}>Vitals</TableCell>
                 </TableRow>
-              </TableHead>
-            </Table>
-            <Box sx={{ maxHeight: 350, overflowY: 'auto' }}>
-              <Table>
-                <TableBody>
-                { 
-                  filteredPatients.length === 0 ? (
-                  <TableRow>
-                    <TableCell align="center">
-                      No patients found.
-                    </TableCell>
-                  </TableRow>
-                ) : sortedPatients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(patient => (
-                    <TableRow key={patient.id}>
-                      <TableCell>{formatter.format(new Date())}</TableCell>
-                      <TableCell>{patient.firstName} {patient.lastName}</TableCell>
-                      <TableCell>{formatter.format(new Date(patient.dateOfBirth))}</TableCell>
-                      <TableCell>{patient.gender}</TableCell>
-                      <TableCell>{patient.contactNumber}</TableCell>
-                      <TableCell>{patient.address}</TableCell>
-                      <TableCell>{patient.reasonForVisit}</TableCell>
-                      <TableCell>
-                        <CustomButton variant="outlined"
-                        sx={{
-                          color: '#007b83',
-                          borderColor: '#007b83',
-                          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
-                        }}
-                        onClick={() => handleSelectedPatient(patient)}>
-                          Add Vitals
-                        </CustomButton>
-                      </TableCell>
-                      <TableCell>
-                        <CustomButton variant="outlined"
-                        sx={{
-                          color: '#007b83',
-                          borderColor: '#007b83',
-                          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
-                        }}
-                        onClick={() => handleShowVitals(patient.id)}>
-                          Show Vitals
-                        </CustomButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
+              ))
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredPatients.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Box>
-      )}
+    <TablePagination
+      rowsPerPageOptions={[5, 10, 25]}
+      component="div"
+      count={filteredPatients.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+  </Box>
+)}
+
 
       {/* Add Patient Dialog */}
       <Dialog open={showAddPatientForm} onClose={() => setShowAddPatientForm(false)} fullWidth maxWidth="sm">

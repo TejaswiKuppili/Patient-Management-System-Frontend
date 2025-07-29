@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
+    CircularProgress,
   Typography,
   Avatar,
   CardActionArea,
@@ -15,9 +16,10 @@ const Appointments = () => {
 
   if (loading)
     return (
-      <Typography variant="h6" align="center" mt={4}>
-        Loading doctors...
-      </Typography>
+   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+  <CircularProgress />
+</Box>
+
     );
   if (error)
     return (

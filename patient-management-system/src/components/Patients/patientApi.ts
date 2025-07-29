@@ -41,12 +41,12 @@ export const addPatient = async (patient: {
 export const fetchVitalsByPatientId = async (patientId: number) => {
   const response = await apiClient.get<{
     success: boolean;
-    message: string | null;
-    data: Vitals[];
+    message: string;
+    data: Vitals[]|null;
     statusCode: number;
   }>(`/api/vital/getVitals/${patientId}`);
   console.log("Vitals fetched:", response.data.data);
-  return response.data.data;
+  return response.data.data ?? [];
 };
 
 //API call to add vitals for a patient
