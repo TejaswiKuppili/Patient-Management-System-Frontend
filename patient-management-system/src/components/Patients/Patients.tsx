@@ -6,7 +6,6 @@ import { addPatient, addVitals, fetchVitalsByPatientId } from './patientApi';
 import {
   Box,
   Typography,
-  Button,
   TextField,
   Select,
   MenuItem,
