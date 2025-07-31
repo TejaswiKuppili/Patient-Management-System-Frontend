@@ -19,13 +19,13 @@ const ShowVitalsDialog = ({ open, onClose, selectedVitals }: any) => (
               </TableRow>
             </TableHead>
             <TableBody>
-              {selectedVitals.map((v: any, i: number) => (
+              {selectedVitals.map((vitals: any, i: number) => (
                 <TableRow key={i}>
-                  <TableCell>{v.recordedAt}</TableCell>
-                  <TableCell>{v.bloodPressure}</TableCell>
-                  <TableCell>{v.heartRate}</TableCell>
-                  <TableCell>{v.temperature}</TableCell>
-                  <TableCell>{v.respiratoryRate}</TableCell>
+                  <TableCell>{vitals.recordedAt}</TableCell>
+                  <TableCell>{vitals.bloodPressure}</TableCell>
+                  <TableCell>{vitals.heartRate}</TableCell>
+                  <TableCell>{vitals.temperature}</TableCell>
+                  <TableCell>{vitals.respiratoryRate}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

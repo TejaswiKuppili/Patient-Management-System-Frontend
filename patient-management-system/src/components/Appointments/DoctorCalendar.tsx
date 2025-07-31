@@ -83,9 +83,17 @@ const DoctorCalendar = () => {
   const handleBookAppointment = async () => {
     if (!doctorId || !selectedSlot || !selectedPatient) return;
 
+    const now = new Date();
+    const slotStart = new Date(selectedSlot.startStr);
+
+    if (slotStart < now) {
+      toast.error("Cannot book an appointment in the past.");
+      return;
+    }
+
     const patient = patients.find((p) => p.id === selectedPatient);
     const patientName = patient ? `${patient.firstName} ${patient.lastName}` : "Unknown Patient";
-    
+
     try {
       await bookAppointment(
         doctorId,
@@ -99,8 +107,31 @@ const DoctorCalendar = () => {
       toast.success('Appointment booked successfully for ' + patientName);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to book appointment. Please try again.");
     }
   };
+
+  // const handleBookAppointment = async () => {
+  //   if (!doctorId || !selectedSlot || !selectedPatient) return;
+
+  //   const patient = patients.find((p) => p.id === selectedPatient);
+  //   const patientName = patient ? `${patient.firstName} ${patient.lastName}` : "Unknown Patient";
+    
+  //   try {
+  //     await bookAppointment(
+  //       doctorId,
+  //       selectedPatient,
+  //       selectedSlot.startStr,
+  //       selectedSlot.endStr
+  //     );
+
+  //     await loadData();
+  //     handleCloseDialog();
+  //     toast.success('Appointment booked successfully for ' + patientName);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleDeleteAppointment = async () => {
     try {
