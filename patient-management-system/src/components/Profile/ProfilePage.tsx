@@ -4,7 +4,10 @@ import {
   Box,
   Divider,
   IconButton,
+  MenuItem,
   Paper,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -33,12 +36,18 @@ const ProfilePage: React.FC = () => {
     loadProfile();
   }, [user]);
 
-  const handleChange = (
+  const handleTextFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     if (profile) {
       setProfile({ ...profile, [name]: value });
+    }
+  };
+
+    const handleSelectChange = (e: SelectChangeEvent) => {
+    if (profile) {
+      setProfile({ ...profile, gender: e.target.value });
     }
   };
 
@@ -107,14 +116,14 @@ const ProfilePage: React.FC = () => {
           label="First Name"
           name="firstName"
           value={profile.firstName}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
         <TextField
           fullWidth
           label="Last Name"
           name="lastName"
           value={profile.lastName}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
       </Box>
 
@@ -125,19 +134,24 @@ const ProfilePage: React.FC = () => {
           type="date"
           name="date"
           value={profile.date ?? ""}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
           InputLabelProps={{ shrink: true }}
           inputProps={{
           max: new Date().toISOString().split("T")[0],
           }}
         />
-        <TextField
-          fullWidth
-          label="Gender"
-          name="gender"
-          value={profile.gender}
-          onChange={handleChange}
-        />
+        <Select 
+          value={profile.gender || ""}
+              label="Gender"
+              name="gender"
+              onChange={handleSelectChange}
+              displayEmpty 
+              fullWidth>
+           <MenuItem value="" disabled>Select Gender</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
       </Box>
 
       {/* Contact Info */}
@@ -152,7 +166,7 @@ const ProfilePage: React.FC = () => {
           label="Email"
           name="email"
           value={profile.email}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
           disabled // assuming email is not editable
         />
         <TextField
@@ -160,7 +174,7 @@ const ProfilePage: React.FC = () => {
           label="Contact Number"
           name="phoneNumber"
           value={profile.phoneNumber || ""}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
       </Box>
 
@@ -175,7 +189,7 @@ const ProfilePage: React.FC = () => {
         label="Address"
         name="address"
         value={profile.address || ""}
-        onChange={handleChange}
+        onChange={handleTextFieldChange}
         sx={{ mb: 2 }}
       />
 
@@ -185,21 +199,21 @@ const ProfilePage: React.FC = () => {
           label="City"
           name="city"
           value={profile.city || ""}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
         <TextField
           fullWidth
           label="State"
           name="state"
           value={profile.state || ""}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
         <TextField
           fullWidth
           label="Country"
           name="country"
           value={profile.country || ""}
-          onChange={handleChange}
+          onChange={handleTextFieldChange}
         />
       </Box>
 
@@ -216,7 +230,7 @@ const ProfilePage: React.FC = () => {
         label="Bio"
         name="bio"
         value={profile.bio || ""}
-        onChange={handleChange}
+        onChange={handleTextFieldChange}
       />
 
       <Box mt={4} textAlign="center">
