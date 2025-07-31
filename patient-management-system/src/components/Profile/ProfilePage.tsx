@@ -127,6 +127,9 @@ const ProfilePage: React.FC = () => {
           value={profile.date ?? ""}
           onChange={handleChange}
           InputLabelProps={{ shrink: true }}
+          inputProps={{
+          max: new Date().toISOString().split("T")[0],
+          }}
         />
         <TextField
           fullWidth
