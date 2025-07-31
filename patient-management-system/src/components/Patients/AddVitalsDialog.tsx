@@ -87,7 +87,13 @@ const AddVitalsDialog = ({
         />
       </DialogContent>
       <DialogActions>
-        <CustomButton variant="outlined" onClick={onClose}>
+        <CustomButton variant="outlined" onClick={onClose}
+           sx={{
+             color: '#007b83',
+             borderColor: '#007b83',
+             '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+          }}
+        >
           Cancel
         </CustomButton>
         <CustomButton variant="contained" onClick={onSubmit}>

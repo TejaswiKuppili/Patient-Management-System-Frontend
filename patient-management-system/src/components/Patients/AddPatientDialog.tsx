@@ -18,29 +18,29 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
           value={newPatient.dateOfBirth} 
           onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} 
           fullWidth />
-       <TextField
-  label="First Name"
-  value={newPatient.firstName}
-  onChange={(e) => {
-    const input = e.target.value;
-    if (/^[A-Za-z\s]*$/.test(input)) {
-      setNewPatient((prev: any) => ({ ...prev, firstName: input }));
-    }
-  }}
-  fullWidth
-/>
-<TextField
-  label="Last Name"
-  value={newPatient.lastName}
-  onChange={(e) => {
-    const input = e.target.value;
-    if (/^[A-Za-z\s]*$/.test(input)) {
-      setNewPatient((prev: any) => ({ ...prev, lastName: input }));
-    }
-  }}
-  fullWidth
-/>
-        <TextField type="date" label="Date of Birth" InputLabelProps={{ shrink: true }} value={newPatient.dateOfBirth} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} fullWidth />
+       {/* <TextField
+          label="First Name"
+          value={newPatient.firstName}
+          onChange={(e) => {
+            const input = e.target.value;
+            if (/^[A-Za-z\s]*$/.test(input)) {
+              setNewPatient((prev: any) => ({ ...prev, firstName: input }));
+            }
+          }}
+          fullWidth
+        />
+        <TextField
+          label="Last Name"
+          value={newPatient.lastName}
+          onChange={(e) => {
+            const input = e.target.value;
+            if (/^[A-Za-z\s]*$/.test(input)) {
+              setNewPatient((prev: any) => ({ ...prev, lastName: input }));
+            }
+          }}
+          fullWidth
+        />
+        <TextField type="date" label="Date of Birth" InputLabelProps={{ shrink: true }} value={newPatient.dateOfBirth} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} fullWidth /> */}
         <Select value={newPatient.gender} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, gender: e.target.value }))} displayEmpty fullWidth>
           <MenuItem value="" disabled>Select Gender</MenuItem>
           <MenuItem value="Male">Male</MenuItem>
@@ -63,7 +63,15 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
         <TextField label="Reason for Visit" value={newPatient.reasonForVisit} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, reasonForVisit: e.target.value }))} fullWidth />
       </DialogContent>
       <DialogActions>
-        <CustomButton variant="outlined" onClick={onClose}>Cancel</CustomButton>
+        <CustomButton variant="outlined" onClick={onClose}
+        sx={{
+          color: '#007b83',
+          borderColor: '#007b83',
+          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+        }}
+        >
+          Cancel
+        </CustomButton>
         <CustomButton variant="contained" onClick={onSubmit}>Add Patient</CustomButton>
       </DialogActions>
     </Dialog>

@@ -22,8 +22,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         name: response.userDetails.name,
         roleName: response.userDetails.roleName,
       };
-      console.log('Auth user:', user);
-
 
       if (user) {
         localStorage.setItem("User ID", user.id.toString());

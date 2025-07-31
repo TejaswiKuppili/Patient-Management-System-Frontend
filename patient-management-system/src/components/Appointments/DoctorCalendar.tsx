@@ -19,6 +19,7 @@ import { bookAppointment, deleteAppointment, fetchAllPatients, fetchAppointments
 import { Patient } from '../Patients/patientTypes';
 import { toast } from 'react-toastify';
 import { CustomButton } from '../common/Custom/CustomButton';
+import axios from 'axios';
 
 const DoctorCalendar = () => {
   const { doctorId: doctorIdParam, doctorName } = useParams();
@@ -105,9 +106,19 @@ const DoctorCalendar = () => {
       await loadData();
       handleCloseDialog();
       toast.success('Appointment booked successfully for ' + patientName);
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to book appointment. Please try again.");
+    } 
+    catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status === 400) {
+          toast.error("This time slot is already booked. Please select a different slot.");
+        } else {
+          toast.error("Failed to book appointment. Please try again later.");
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
 
@@ -223,7 +234,13 @@ const DoctorCalendar = () => {
           </TextField>
         </DialogContent>
         <DialogActions>
-          <CustomButton onClick={handleCloseDialog}>
+          <CustomButton onClick={handleCloseDialog}
+           sx={{
+             color: '#007b83',
+             borderColor: '#007b83',
+            '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+          }}
+          >
             Cancel
           </CustomButton>
           <Button onClick={handleBookAppointment} variant="contained" color="primary">
