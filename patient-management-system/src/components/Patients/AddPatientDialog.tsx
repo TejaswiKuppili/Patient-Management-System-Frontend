@@ -9,18 +9,7 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Add New Patient</DialogTitle>
       <DialogContent sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextField label="First Name" value={newPatient.firstName} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, firstName: e.target.value }))} fullWidth />
-        <TextField label="Last Name" value={newPatient.lastName} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, lastName: e.target.value }))} fullWidth />
-        <TextField 
-        type="date" 
-        label="Date of Birth" 
-        InputLabelProps={{ shrink: true }} inputProps={{
-          max: new Date().toISOString().split("T")[0],
-          }} 
-          value={newPatient.dateOfBirth} 
-          onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} 
-          fullWidth />
-       {/* <TextField
+         <TextField
           label="First Name"
           value={newPatient.firstName}
           onChange={(e) => {
@@ -42,6 +31,25 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
           }}
           fullWidth
         />
+            <TextField
+  type="date"
+  label="Date of Birth"
+  InputLabelProps={{ shrink: true }}
+  inputProps={{
+    max: new Date().toISOString().split("T")[0]
+  }}
+  value={newPatient.dateOfBirth}
+  onChange={(e) => {
+    const inputDate = e.target.value;
+    const today = new Date().toISOString().split("T")[0];
+    if (inputDate <= today) {
+      setNewPatient((prev: any) => ({ ...prev, dateOfBirth: inputDate }));
+    }
+  }}
+  fullWidth
+/>
+
+       {/*
         <TextField type="date" label="Date of Birth" InputLabelProps={{ shrink: true }} value={newPatient.dateOfBirth} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} fullWidth /> */}
         <Select value={newPatient.gender} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, gender: e.target.value }))} displayEmpty fullWidth>
           <MenuItem value="" disabled>Select Gender</MenuItem>
