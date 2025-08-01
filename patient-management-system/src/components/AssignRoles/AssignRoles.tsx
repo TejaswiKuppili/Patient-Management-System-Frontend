@@ -205,7 +205,15 @@ const AssignRoles = () => {
           </Select>
         </DialogContent>
         <DialogActions>
-          <CustomButton variant="outlined" onClick={() => setShowEditUserDialog(false)}>Cancel</CustomButton>
+          <CustomButton variant="outlined" onClick={() => setShowEditUserDialog(false)}
+            sx={{
+          color: '#007b83',
+          borderColor: '#007b83',
+          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+        }}
+        >
+          Cancel
+        </CustomButton>
           <CustomButton variant="contained" onClick={handleUpdate}>Save</CustomButton>
         </DialogActions>
       </Dialog>
@@ -217,7 +225,15 @@ const AssignRoles = () => {
           <Typography>Are you sure you want to delete <strong>{selectedUser?.name ?? 'this user'}</strong>?</Typography>
         </DialogContent>
         <DialogActions>
-          <CustomButton variant="outlined" onClick={() => setShowDeleteUserDialog(false)}>Cancel</CustomButton>
+          <CustomButton variant="outlined" onClick={() => setShowDeleteUserDialog(false)}
+            sx={{
+          color: '#007b83',
+          borderColor: '#007b83',
+          '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
+        }}
+        >
+          Cancel
+        </CustomButton>
           <CustomButton variant="contained" color="error" onClick={handleDeleteUser}>Delete</CustomButton>
         </DialogActions>
       </Dialog>

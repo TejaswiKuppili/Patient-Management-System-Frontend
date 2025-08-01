@@ -21,6 +21,7 @@ import { CustomButton } from "../common/Custom";
 const ProfilePage: React.FC = () => {
   const { user } = useAuthContext();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -40,10 +41,39 @@ const ProfilePage: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    // Only allow numeric values and up to 10 digits for phone number
+    if (name === "phoneNumber") {
+      // Block non-digit characters or more than 10 digits
+      if (!/^\d{0,10}$/.test(value)) return;
+
+      // Set error if less than 10 digits
+      if (value.length > 0 && value.length < 10) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "Phone number must be 10 digits",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    }
+
     if (profile) {
       setProfile({ ...profile, [name]: value });
     }
   };
+
+  // const handleTextFieldChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   if (profile) {
+  //     setProfile({ ...profile, [name]: value });
+  //   }
+  // };
 
     const handleSelectChange = (e: SelectChangeEvent) => {
     if (profile) {
@@ -175,6 +205,8 @@ const ProfilePage: React.FC = () => {
           name="phoneNumber"
           value={profile.phoneNumber || ""}
           onChange={handleTextFieldChange}
+          error={Boolean(errors.phoneNumber)}
+          helperText={errors.phoneNumber}
         />
       </Box>
 
