@@ -22,7 +22,7 @@ const AddVitalsDialog = ({
     switch (field) {
       case 'bloodPressure':
        
-  valid = /^(\d{0,2})(\/\d{0,2})?$/.test(value);
+  valid = /^(\d{0,3})(\/\d{0,2})?$/.test(value);
 
  // numbers and '/'
         break;
