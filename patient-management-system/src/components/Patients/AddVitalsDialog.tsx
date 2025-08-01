@@ -21,12 +21,22 @@ const AddVitalsDialog = ({
 
     switch (field) {
       case 'bloodPressure':
-        valid = /^[\d/]*$/.test(value); // numbers and '/'
+       
+  valid = /^(\d{0,2})(\/\d{0,2})?$/.test(value);
+
+ // numbers and '/'
         break;
       case 'heartRate':
+        
+  valid = /^(\d{0,3})$/.test(value);
+  break;
+
       case 'temperature':
+         valid = /^(\d{0,3})$/.test(value);
+  break;
+
       case 'respiratoryRate':
-        valid = /^\d*$/.test(value); // only digits
+        valid = /^\d{0,2}$/.test(value); // only digits
         break;
       default:
         break;
