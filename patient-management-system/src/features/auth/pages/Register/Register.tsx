@@ -30,13 +30,20 @@ export const Register = () => {
         setLoading(true);
         setServerError('');
         try{
-            await registerUser(values);
-            toast.success('Registration successful! Please login to continue.');
+          const response = await registerUser(values); // get success & message
+
+          if (response.success === true) {
+            toast.success(response.message || 'Registration successful! Please login to continue.');
             navigate('/login');
+          } else {
+            // setServerError(response.message || 'Registration failed.');
+            toast.error(response.message || 'Registration failed. Please try again.');
+          }
         }
-        catch(error: any){
-            setServerError(error?.response?.data?.message || 'Something went wrong');
-            toast.error('Registration failed. Please try again.');
+          catch(error: any){
+            const errorMessage = error?.response?.data?.message || 'Something went wrong';
+            setServerError(errorMessage);
+            toast.error(errorMessage);
         }
         finally{
             setLoading(false);
