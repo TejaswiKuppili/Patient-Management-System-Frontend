@@ -29,6 +29,7 @@ const ProfilePage: React.FC = () => {
         const data = await fetchUserProfile(user.id);
         setProfile(data);
       } catch (error) {
+      } catch (error) {
         toast.error("Failed to load profile.");
       }
     };
@@ -78,6 +79,7 @@ const handleTextFieldChange = (
       await updateUserProfile(profile);
       toast.success("Profile updated successfully!");
     } catch (error) {
+    } catch (error) {
       toast.error("Failed to update profile.");
     }
   };
@@ -106,6 +108,10 @@ const handleTextFieldChange = (
             src={profile.profilePicture}
             sx={{ width: 130, height: 130 }}
           />
+          <Avatar
+            src={profile.profilePicture}
+            sx={{ width: 130, height: 130 }}
+          />
           <IconButton
             sx={{
               position: "absolute",
@@ -115,6 +121,7 @@ const handleTextFieldChange = (
               boxShadow: 1,
             }}
             size="small"
+            onClick={() => alert("Should add profile picture change logic")}
             onClick={() => alert("Should add profile picture change logic")}
           >
             <EditIcon fontSize="small" />
@@ -173,6 +180,16 @@ const handleTextFieldChange = (
             <MenuItem value="Female">Female</MenuItem>
                   <MenuItem value="Other">Other</MenuItem>
                 </Select>
+              label="Gender"
+              name="gender"
+              onChange={handleSelectChange}
+              displayEmpty 
+              fullWidth>
+           <MenuItem value="" disabled>Select Gender</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
       </Box>
 
       {/* Contact Info */}
@@ -188,7 +205,7 @@ const handleTextFieldChange = (
           name="email"
           value={profile.email}
           onChange={handleTextFieldChange}
-          disabled // assuming email is not editable
+          disabled
         />
         <TextField
           fullWidth
@@ -196,6 +213,8 @@ const handleTextFieldChange = (
           name="phoneNumber"
           value={profile.phoneNumber || ""}
           onChange={handleTextFieldChange}
+          error={Boolean(errors.phoneNumber)}
+          helperText={errors.phoneNumber}
         />
       </Box>
 

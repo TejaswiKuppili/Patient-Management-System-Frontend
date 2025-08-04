@@ -4,7 +4,7 @@ import { RegisterRequest, LoginRequest, LoginResponse, User } from "../types";
 // API call to register a new user
 export const register = async (
   data: RegisterRequest
-): Promise<LoginResponse> => {
+): Promise<{ success: boolean; message: string }> => {
   const payload = {
     Name: data.name,
     Email: data.email,
@@ -12,9 +12,8 @@ export const register = async (
     RoleName: data.roleName,
   };
 
-  console.log("payload", payload);
   const response = await apiClient.post("/api/users/create", payload);
-  console.log("register", response);
+  console.log("register", response.data);
   return response.data;
 };
 
