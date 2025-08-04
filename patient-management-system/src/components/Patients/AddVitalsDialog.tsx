@@ -86,7 +86,7 @@ const AddVitalsDialog = ({
           value={vitals.temperature}
           onChange={(e) => handleInputChange('temperature', e.target.value)}
           fullWidth
-          helperText="Enter temperature in °C (e.g., 98.6)"
+          helperText="Enter temperature in °C (e.g., 98)"
         />
         <TextField
           label="Respiratory Rate"
