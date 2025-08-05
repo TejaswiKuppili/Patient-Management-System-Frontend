@@ -4,7 +4,7 @@ import { Login } from './features/auth/pages/Login/Login';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './styles/variables.css';
 import { Dashboard } from './components/Dashboard/Dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './features/auth/ProtectedRoute';
 import AssignRoles from './components/AssignRoles/AssignRoles';
 import { AuthProvider } from './features/auth/AuthProvider';
 import { ToastContainer } from 'react-toastify';
