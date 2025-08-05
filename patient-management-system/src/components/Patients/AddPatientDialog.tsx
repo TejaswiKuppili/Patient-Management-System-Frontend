@@ -1,9 +1,63 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, Select } from '@mui/material';
 import { CustomButton } from '../common/Custom';
 import { useState } from 'react';
+import { validateDateOfBirth, validateFirstName, validatePhoneNumber } from '../../utils/validation';
 
 const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }: any) => {
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    const error = validateFirstName(input);
+     setErrors((prev: any) => ({
+      ...prev,
+      dateOfBirth: error,
+    }));
+
+    // Only update state if valid
+    if (!error) {
+      setNewPatient((prev: any) => ({
+        ...prev,
+        dateOfBirth: input,
+      }));
+    }
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputDate = e.target.value;
+
+    const error = validateDateOfBirth(inputDate);
+    setErrors((prev: any) => ({
+      ...prev,
+      dateOfBirth: error,
+    }));
+
+    // Only update state if valid
+    if (!error) {
+      setNewPatient((prev: any) => ({
+        ...prev,
+        dateOfBirth: inputDate,
+      }));
+    }
+  };
+  const handleContactNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+
+    // Prevent updating state if more than 10 digits
+    if (input.length > 10) return;
+
+    setNewPatient((prev: any) => ({
+      ...prev,
+      contactNumber: input,
+    }));
+
+    const error = validatePhoneNumber(input);
+    setErrors((prev) => ({
+      ...prev,
+      contactNumber: error,
+    }));
+  };
+
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -31,23 +85,20 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
           }}
           fullWidth
         />
-            <TextField
-  type="date"
-  label="Date of Birth"
-  InputLabelProps={{ shrink: true }}
-  inputProps={{
-    max: new Date().toISOString().split("T")[0]
-  }}
-  value={newPatient.dateOfBirth}
-  onChange={(e) => {
-    const inputDate = e.target.value;
-    const today = new Date().toISOString().split("T")[0];
-    if (inputDate <= today) {
-      setNewPatient((prev: any) => ({ ...prev, dateOfBirth: inputDate }));
-    }
-  }}
-  fullWidth
-/>
+        <TextField
+          type="date"
+          label="Date of Birth"
+          name="dateOfBirth"
+          InputLabelProps={{ shrink: true }}
+          inputProps={{
+            max: new Date().toISOString().split("T")[0]
+          }}
+          value={newPatient.dateOfBirth}
+          onChange={handleDateChange}
+          error={Boolean(errors.dateOfBirth)}
+          helperText={errors.dateOfBirth}
+          fullWidth
+        />
 
        {/*
         <TextField type="date" label="Date of Birth" InputLabelProps={{ shrink: true }} value={newPatient.dateOfBirth} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, dateOfBirth: e.target.value }))} fullWidth /> */}
@@ -60,31 +111,7 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
         <TextField
           label="Contact Number"
           value={newPatient.contactNumber}
-         onChange={(e) => {
-          const input = e.target.value;
-
-          // Allow only digits and limit to 10 characters
-          if (/^\d*$/.test(input) && input.length <= 10) {
-            setNewPatient((prev: any) => ({
-              ...prev,
-              contactNumber: input,
-            }));
-
-            // Show error if less than 10 digits and not empty
-            if (input.length > 0 && input.length < 10) {
-              setErrors((prev) => ({
-                ...prev,
-                contactNumber: "Phone number must be 10 digits",
-              }));
-            } else {
-              setErrors((prev) => ({
-                ...prev,
-                contactNumber: "",
-              }));
-            }
-          }
-        }}
-          
+          onChange={handleContactNumberChange}
           error={Boolean(errors.contactNumber)}
           helperText={errors.contactNumber}
           fullWidth

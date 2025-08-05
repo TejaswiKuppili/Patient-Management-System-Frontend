@@ -17,6 +17,7 @@ import { useAuthContext } from "../../features/auth/AuthProvider";
 import { Profile } from "./types/profileTypes";
 import { fetchUserProfile, updateUserProfile } from "./api/profileApi";
 import { CustomButton } from "../common/Custom";
+import { validateDateOfBirth, validateFirstName, validateLastName, validatePhoneNumber } from "../../utils/validation";
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuthContext();
@@ -36,35 +37,81 @@ const ProfilePage: React.FC = () => {
     loadProfile();
   }, [user]);
 
-const handleTextFieldChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  const { name, value } = e.target;
-  if (!profile) return;
+  const handleTextFieldChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (!profile) return;
 
-  // ✅ Validate Date of Birth
-  if (name === "date") {
-    const inputDate = new Date(value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Strip time
+    switch (name) {
+      //Validate and set profile fields
+      case "firstName": {
+        const error = validateFirstName(value);
+        setErrors((prev) => ({
+          ...prev,
+          firstName: error,
+        }));
 
-    if (isNaN(inputDate.getTime()) || inputDate > today) {
-      toast.error("Please enter a valid date of birth not in the future.");
-      return;
+        setProfile((prev: any) => ({
+          ...prev,
+          firstName: value,
+        }));
+        return;
+      }
+
+      case "lastName": {
+        const error = validateLastName(value);
+        setErrors((prev) => ({
+          ...prev,
+          lastName: error,
+        }));
+
+        setProfile((prev: any) => ({
+          ...prev,
+          lastName: value,
+        }));
+        return;
+      }
+
+      case "date": {
+        const error = validateDateOfBirth(value);
+
+        setErrors((prev) => ({
+          ...prev,
+          dateOfBirth: error,
+        }));
+
+        setProfile((prev: any) => ({
+          ...prev,
+          date: value,
+        }));
+        return;
+      }
+
+      case "phoneNumber": {
+          const input = e.target.value;
+
+          // Prevent updating state if more than 10 digits
+          if (input.length > 10) return;
+
+          setProfile((prev: any) => ({
+            ...prev,
+            phoneNumber: input,
+          }));
+
+          const error = validatePhoneNumber(input);
+          setErrors((prev) => ({
+            ...prev,
+            phoneNumber: error,
+          }));
+        return;
+      }
+
+      default: {
+        setProfile({ ...profile, [name]: value });
+      }
     }
-  }
-
-  // ✅ Validate Phone Number
-  if (name === "phoneNumber") {
-    const numericOnly = value.replace(/\D/g, ""); // Remove non-digits
-    if (numericOnly.length > 10) return;
-    setProfile({ ...profile, phoneNumber: numericOnly });
-    return;
-  }
-
-  // ✅ Default
-  setProfile({ ...profile, [name]: value });
-};
+  };
 
     const handleSelectChange = (e: SelectChangeEvent) => {
     if (profile) {
@@ -140,6 +187,9 @@ const handleTextFieldChange = (
           name="firstName"
           value={profile.firstName}
           onChange={handleTextFieldChange}
+          inputProps={{ maxLength: 50 }}
+          error={Boolean(errors.firstName)}
+          helperText={errors.firstName}
         />
         <TextField
           fullWidth
@@ -147,6 +197,9 @@ const handleTextFieldChange = (
           name="lastName"
           value={profile.lastName}
           onChange={handleTextFieldChange}
+          inputProps={{ maxLength: 50 }}
+          error={Boolean(errors.lastName)}
+          helperText={errors.lastName}
         />
       </Box>
 
@@ -162,6 +215,8 @@ const handleTextFieldChange = (
           inputProps={{
           max: new Date().toISOString().split("T")[0],
           }}
+          error={Boolean(errors.dateOfBirth)}
+          helperText={errors.dateOfBirth}
         />
         <Select 
           value={profile.gender || ""}
@@ -199,6 +254,7 @@ const handleTextFieldChange = (
           value={profile.phoneNumber || ""}
           onChange={handleTextFieldChange}
           error={Boolean(errors.phoneNumber)}
+          helperText={errors.phoneNumber}
         />
       </Box>
 

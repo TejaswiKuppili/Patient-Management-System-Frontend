@@ -340,40 +340,6 @@ const Patients = () => {
         newPatient={newPatient}
         setNewPatient={setNewPatient}
       />
-      {/* <Dialog open={showAddPatientForm} onClose={() => setShowAddPatientForm(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Add New Patient</DialogTitle>
-        <DialogContent sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField label="First Name" value={newPatient.firstName} onChange={(e) => setNewPatient(prev => ({ ...prev, firstName: e.target.value }))} fullWidth />
-          <TextField label="Last Name" value={newPatient.lastName} onChange={(e) => setNewPatient(prev => ({ ...prev, lastName: e.target.value }))} fullWidth />
-          <TextField
-            label="Date of Birth"
-            type="date"
-            InputLabelProps={{ shrink: true }}
-            value={newPatient.dateOfBirth}
-            onChange={(e) => setNewPatient(prev => ({ ...prev, dateOfBirth: e.target.value }))}
-            fullWidth
-          />
-          <Select
-            value={newPatient.gender}
-            onChange={(e) => setNewPatient(prev => ({ ...prev, gender: e.target.value }))}
-            displayEmpty
-            fullWidth
-          >
-            <MenuItem value="" disabled>Select Gender</MenuItem>
-            <MenuItem value="Male">Male</MenuItem>
-            <MenuItem value="Female">Female</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-          <TextField label="Contact Number" value={newPatient.contactNumber} onChange={(e) => setNewPatient(prev => ({ ...prev, contactNumber: e.target.value }))} fullWidth />
-          <TextField label="Address" value={newPatient.address} onChange={(e) => setNewPatient(prev => ({ ...prev, address: e.target.value }))} fullWidth />
-          <TextField label="Reason for Visit" value={newPatient.reasonForVisit} onChange={(e) => setNewPatient(prev => ({ ...prev, reasonForVisit: e.target.value }))} fullWidth />
-        </DialogContent>
-        <DialogActions>
-          <CustomButton variant="outlined" onClick={() => setShowAddPatientForm(false)}
-            sx={{'&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' }}}>Cancel</CustomButton>
-          <CustomButton variant="contained" onClick={handleAddPatient}>Add Patient</CustomButton>
-        </DialogActions>
-      </Dialog> */}
 
       {/* Add Vitals Dialog */}
       <AddVitalsDialog
@@ -384,69 +350,13 @@ const Patients = () => {
         setVitals={setVitals}
         selectedPatient={selectedPatient}
       />
-      {/* <Dialog open={showAddVitalsForm} onClose={() => setShowAddVitalsForm(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Record Vitals</DialogTitle>
-        <DialogContent sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField label="Patient" value={`${selectedPatient?.firstName} ${selectedPatient?.lastName}`} disabled fullWidth />
-          <TextField label="Recorded At" type="datetime-local" value={vitals.recordedAt} disabled fullWidth />
-          <TextField label="Blood Pressure" value={vitals.bloodPressure} onChange={(e) => setVitals(prev => ({ ...prev, bloodPressure: e.target.value }))} fullWidth />
-          <TextField label="Heart Rate" value={vitals.heartRate} onChange={(e) => setVitals(prev => ({ ...prev, heartRate: e.target.value }))} fullWidth />
-          <TextField label="Temperature" value={vitals.temperature} onChange={(e) => setVitals(prev => ({ ...prev, temperature: e.target.value }))} fullWidth />
-          <TextField label="Respiratory Rate" value={vitals.respiratoryRate} onChange={(e) => setVitals(prev => ({ ...prev, respiratoryRate: e.target.value }))} fullWidth />
-        </DialogContent>
-        <DialogActions>
-          <CustomButton variant='outlined'
-          onClick={() => setShowAddVitalsForm(false)}
-          sx={{
-            color: '#007b83',
-            borderColor: '#007b83',
-            '&:hover': { borderColor: '#F5FBF9', color: '#F5FBF9' },
-          }}>
-            Cancel
-          </CustomButton>
-          <CustomButton variant="contained" onClick={handleAddVitals}>Submit</CustomButton>
-        </DialogActions>
-      </Dialog> */}
-
+      
       {/* Show Vitals Dialog */}
       <ShowVitalsDialog
         open={showVitalsModal}
         onClose={() => setShowVitalsModal(false)}
         selectedVitals={selectedVitals}
       />
-      {/* <Dialog open={showVitalsModal} onClose={() => setShowVitalsModal(false)} fullWidth maxWidth="md">
-        <DialogTitle>Vitals for Patient</DialogTitle>
-        <DialogContent>
-          {selectedVitals.length === 0 ? (
-            <Typography>No vitals recorded.</Typography>
-          ) : (
-            <TableContainer component={Paper} sx={{ mt: 2 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Recorded At</TableCell>
-                    <TableCell>Blood Pressure</TableCell>
-                    <TableCell>Heart Rate</TableCell>
-                    <TableCell>Temperature</TableCell>
-                    <TableCell>Respiratory Rate</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {selectedVitals.map((v, i) => (
-                    <TableRow key={i}>
-                      <TableCell>{v.recordedAt}</TableCell>
-                      <TableCell>{v.bloodPressure}</TableCell>
-                      <TableCell>{v.heartRate}</TableCell>
-                      <TableCell>{v.temperature}</TableCell>
-                      <TableCell>{v.respiratoryRate}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </DialogContent>
-      </Dialog> */}
     </Box>
   );
 };
