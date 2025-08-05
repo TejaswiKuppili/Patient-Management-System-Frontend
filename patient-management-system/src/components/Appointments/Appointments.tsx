@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
-    CircularProgress,
   Typography,
   Avatar,
   CardActionArea,
   Box,
 } from "@mui/material";
 import useDoctors from "./useDoctorsHook";
+import Spinner from "../common/Loader/Spinner";
 
 const Appointments = () => {
   const { doctors, loading, error } = useDoctors();
@@ -16,11 +16,11 @@ const Appointments = () => {
 
   if (loading)
     return (
-   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-  <CircularProgress />
-</Box>
-
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Spinner />
+      </Box>
     );
+    
   if (error)
     return (
       <Typography variant="h6" align="center" color="error" mt={4}>

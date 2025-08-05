@@ -7,14 +7,7 @@ import {
   Box,
   Typography,
   TextField,
-  Select,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Alert,
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -33,6 +26,7 @@ import * as Yup from 'yup';
 import AddVitalsDialog from './AddVitalsDialog';
 import AddPatientDialog from './AddPatientDialog';
 import ShowVitalsDialog from './ShowVitalsDialog';
+import Spinner from '../common/Loader/Spinner';
 
 const Patients = () => {
   const formatter = useDateFormatter({ dateStyle: "long" });
@@ -238,7 +232,7 @@ const Patients = () => {
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 {loading ? (
   <Box display="flex" justifyContent="center" mt={4}>
-    <CircularProgress />
+    <Spinner />
   </Box>
 ) : (
   <Box sx={{ mx: 'auto', mt: 3 }}>

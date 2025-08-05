@@ -20,7 +20,6 @@ import {
   DialogContent,
   DialogActions,
   Alert,
-  CircularProgress,
   InputAdornment,
   TablePagination
 } from '@mui/material';
@@ -29,6 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import { CustomButton, CustomContainer } from '../common/Custom';
 import { toast } from 'react-toastify';
 import { User } from '../../features/auth/types';
+import Spinner from '../common/Loader/Spinner';
 
 const AssignRoles = () => {
   const { users, roles, loading, error, refetch } = useUsers();
@@ -141,7 +141,7 @@ const AssignRoles = () => {
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       {loading ? (
-        <Box display="flex" justifyContent="center" mt={4}><CircularProgress /></Box>
+        <Box display="flex" justifyContent="center" mt={4}><Spinner /></Box>
       ) : (
         <TableContainer component={Paper}>
           <Table stickyHeader>

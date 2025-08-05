@@ -1,4 +1,5 @@
-import { Button, CircularProgress, SxProps, Theme } from '@mui/material';
+import { Button, SxProps, Theme } from '@mui/material';
+import Spinner from '../Loader/Spinner';
 
 interface CustomButtonProps {
   loading?: boolean;
@@ -22,7 +23,7 @@ export const CustomButton = ({
       disabled={props.disabled || loading}
       {...props}
     >
-      {loading ? <CircularProgress size={24} color="inherit" /> : children}
+      {loading ? <Spinner /> : children}
     </Button>
   );
 };
