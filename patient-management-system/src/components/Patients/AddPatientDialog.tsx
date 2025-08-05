@@ -4,6 +4,18 @@ import { useState } from 'react';
 import { validateDateOfBirth, validateFirstName, validatePhoneNumber } from '../../utils/validation';
 
 const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }: any) => {
+  const resetForm = () => {
+    setNewPatient({
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      gender: '',
+      contactNumber: '',
+      address: '',
+      reasonForVisit: '',
+    });
+  };
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,14 +23,31 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
     const error = validateFirstName(input);
      setErrors((prev: any) => ({
       ...prev,
-      dateOfBirth: error,
+      firstName: error,
     }));
 
     // Only update state if valid
     if (!error) {
       setNewPatient((prev: any) => ({
         ...prev,
-        dateOfBirth: input,
+        firstName: input,
+      }));
+    }
+  };
+
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    const error = validateFirstName(input);
+     setErrors((prev: any) => ({
+      ...prev,
+      lastName: error,
+    }));
+
+    // Only update state if valid
+    if (!error) {
+      setNewPatient((prev: any) => ({
+        ...prev,
+        lastName: input,
       }));
     }
   };
@@ -66,23 +95,13 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
          <TextField
           label="First Name"
           value={newPatient.firstName}
-          onChange={(e) => {
-            const input = e.target.value;
-            if (/^[A-Za-z\s]*$/.test(input)) {
-              setNewPatient((prev: any) => ({ ...prev, firstName: input }));
-            }
-          }}
+          onChange={handleFirstNameChange}
           fullWidth
         />
         <TextField
           label="Last Name"
           value={newPatient.lastName}
-          onChange={(e) => {
-            const input = e.target.value;
-            if (/^[A-Za-z\s]*$/.test(input)) {
-              setNewPatient((prev: any) => ({ ...prev, lastName: input }));
-            }
-          }}
+          onChange={handleLastNameChange}
           fullWidth
         />
         <TextField
@@ -120,7 +139,11 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
         <TextField label="Reason for Visit" value={newPatient.reasonForVisit} onChange={(e) => setNewPatient((prev: any) => ({ ...prev, reasonForVisit: e.target.value }))} fullWidth />
       </DialogContent>
       <DialogActions>
-        <CustomButton variant="outlined" onClick={onClose}
+        <CustomButton variant="outlined"
+        onClick={() => {
+          resetForm();
+          onClose();
+        }}
         sx={{
           color: '#007b83',
           borderColor: '#007b83',

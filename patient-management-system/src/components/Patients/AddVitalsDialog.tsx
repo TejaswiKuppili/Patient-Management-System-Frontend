@@ -15,6 +15,15 @@ const AddVitalsDialog = ({
   setVitals,
   selectedPatient,
 }: any) => {
+  const resetForm = () => {
+    setVitals({
+      recordedAt: '',
+      bloodPressure: '',
+      heartRate: '',
+      temperature: '',
+      respiratoryRate: '',
+    });
+  };
   // Utility to allow only numeric or medically valid characters
   const handleInputChange = (field: string, value: string) => {
     let valid = true;
@@ -97,7 +106,11 @@ const AddVitalsDialog = ({
         />
       </DialogContent>
       <DialogActions>
-        <CustomButton variant="outlined" onClick={onClose}
+        <CustomButton variant="outlined"
+          onClick={()=>{
+            resetForm();
+            onClose();
+          }}
            sx={{
              color: '#007b83',
              borderColor: '#007b83',
