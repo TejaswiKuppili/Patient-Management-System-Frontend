@@ -21,12 +21,11 @@ import {
 import { CustomButton } from '../common/Custom';
 import { Search } from '@mui/icons-material';
 import { useDateFormatter } from '@react-aria/i18n';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import AddVitalsDialog from './AddVitalsDialog';
 import AddPatientDialog from './AddPatientDialog';
 import ShowVitalsDialog from './ShowVitalsDialog';
 import Spinner from '../common/Loader/Spinner';
+import { toast } from 'react-toastify';
 
 const Patients = () => {
   const formatter = useDateFormatter({ dateStyle: "long" });
@@ -120,7 +119,7 @@ const Patients = () => {
       !newPatient.address ||
       !newPatient.reasonForVisit
     ) {
-      setMessage("Please fill in all the details.");
+      toast.error("Please fill in all the details.");
       return;
     }
   

@@ -31,6 +31,7 @@ const DoctorCalendar = () => {
   const [selectedSlot, setSelectedSlot] = useState<DateSelectArg | null>(null);
   const [selectedPatient, setSelectedPatient] = useState<number>(0);
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+  const [selectedEventEndTime, setSelectedEventEndTime] = useState<Date | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const loadData = async () => {
@@ -69,8 +70,12 @@ const DoctorCalendar = () => {
   };
 
   const handleEventClick = (arg: EventClickArg) => {
+    const event = arg.event;
     const eventId = (arg.event as any)._def.publicId;
+    const eventEnd = new Date((event.end ?? event.start)!);
+
     setSelectedEventId(Number(eventId));
+    setSelectedEventEndTime(eventEnd);
     setDeleteDialogOpen(true);
   };
 
@@ -122,30 +127,13 @@ const DoctorCalendar = () => {
     }
   };
 
-  // const handleBookAppointment = async () => {
-  //   if (!doctorId || !selectedSlot || !selectedPatient) return;
-
-  //   const patient = patients.find((p) => p.id === selectedPatient);
-  //   const patientName = patient ? `${patient.firstName} ${patient.lastName}` : "Unknown Patient";
-    
-  //   try {
-  //     await bookAppointment(
-  //       doctorId,
-  //       selectedPatient,
-  //       selectedSlot.startStr,
-  //       selectedSlot.endStr
-  //     );
-
-  //     await loadData();
-  //     handleCloseDialog();
-  //     toast.success('Appointment booked successfully for ' + patientName);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   const handleDeleteAppointment = async () => {
     try {
+      if (selectedEventEndTime && selectedEventEndTime < new Date()) {
+        toast.error('Cannot delete past appointments');
+        return;
+      }
+
       if (selectedEventId) {
         await deleteAppointment(selectedEventId);
         await loadData();
@@ -157,9 +145,9 @@ const DoctorCalendar = () => {
     } finally {
       setDeleteDialogOpen(false);
       setSelectedEventId(null);
+      setSelectedEventEndTime(null);
     }
   };
-  
 
   return (
     <Box
@@ -182,7 +170,7 @@ const DoctorCalendar = () => {
           overflow: 'hidden',
         }}
       >
-        <Typography variant="h5" fontWeight="bold" align="center" gutterBottom>
+        <Typography variant="h5" fontWeight="bold" align="center" gutterBottom color="primary">
           Calendar for Dr. {decodeURIComponent(doctorName || '')}
         </Typography>
 
@@ -203,7 +191,7 @@ const DoctorCalendar = () => {
 
       {/* Dialog for booking appointment */}
       <Dialog fullWidth maxWidth="sm" open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle align="center">Book Appointment</DialogTitle>
+        <DialogTitle align="center" color="primary">Book Appointment</DialogTitle>
         <DialogContent>
           <TextField
             select

@@ -13,6 +13,10 @@ interface CalendarProps {
   onEventClick: (arg: EventClickArg) => void;
   showBackButton?: boolean;
   initialView?: 'timeGridWeek' | 'timeGridDay' | 'dayGridMonth';
+  validRange?: {
+    start?: string;
+    end?: string;
+  };
 }
 
 const Calendar: React.FC<CalendarProps> = ({
@@ -53,7 +57,11 @@ const Calendar: React.FC<CalendarProps> = ({
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
         selectable
-        editable
+        editable={false}
+        selectAllow={(selectInfo) => {
+          const now = new Date();
+          return selectInfo.start >= now;
+        }}
         select={(arg) => {
           // Only allow slot selection in day and week views
           if (arg.view.type === 'timeGridDay' || arg.view.type === 'timeGridWeek') {

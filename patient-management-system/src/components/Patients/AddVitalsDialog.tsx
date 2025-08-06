@@ -4,8 +4,12 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  Box,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import { CustomButton } from '../common/Custom';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 const AddVitalsDialog = ({
   open,
@@ -61,7 +65,20 @@ const AddVitalsDialog = ({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Record Vitals</DialogTitle>
+      <DialogTitle color="primary">
+        Record Vitals
+        <Box sx={{ position: 'absolute', right: 8, top: 8 }}>
+          <Tooltip title="Cancel">
+            <IconButton onClick={() => {
+              resetForm();
+              onClose();
+            }} 
+            color="primary">
+              <CancelOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </DialogTitle>
       <DialogContent sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <TextField
           label="Patient"

@@ -1,8 +1,18 @@
-import { Dialog, DialogTitle, DialogContent, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper, Typography, Box, Tooltip, IconButton } from '@mui/material';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 const ShowVitalsDialog = ({ open, onClose, selectedVitals }: any) => (
   <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-    <DialogTitle>Vitals for Patient</DialogTitle>
+    <DialogTitle color="primary">
+      Vitals for Patient
+      <Box sx={{ position: 'absolute', right: 8, top: 8 }}>
+        <Tooltip title="Cancel">
+          <IconButton onClick={onClose} color="primary">
+            <CancelOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    </DialogTitle>
     <DialogContent>
       {selectedVitals.length === 0 ? (
         <Typography>No vitals recorded.</Typography>

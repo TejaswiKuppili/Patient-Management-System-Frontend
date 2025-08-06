@@ -1,7 +1,8 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, Select } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, Select, Box, Tooltip, IconButton } from '@mui/material';
 import { CustomButton } from '../common/Custom';
 import { useState } from 'react';
 import { validateDateOfBirth, validateFirstName, validatePhoneNumber } from '../../utils/validation';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }: any) => {
   const resetForm = () => {
@@ -90,7 +91,20 @@ const AddPatientDialog = ({ open, onClose, onSubmit, newPatient, setNewPatient }
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Add New Patient</DialogTitle>
+      <DialogTitle color="primary">
+        Add New Patient
+        <Box sx={{ position: 'absolute', right: 8, top: 8 }}>
+          <Tooltip title="Cancel">
+            <IconButton onClick={() => {
+              resetForm();
+              onClose();
+            }} 
+            color="primary">
+              <CancelOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </DialogTitle>
       <DialogContent sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
          <TextField
           label="First Name"
